@@ -33,7 +33,7 @@ for i in $(seq 0 $((${#PG_VERSIONS[*]}-1))); do
     sudo sed -i "s/#max_wal_senders = .*/max_wal_senders = 200/" /etc/postgresql/${version}/main/postgresql.conf
     sudo sed -i "s/#max_logical_replication_workers = .*/max_logical_replication_workers = 200/" /etc/postgresql/${version}/main/postgresql.conf
     sudo sed -i "s/#wal_level = .*/wal_level = 'logical'/" /etc/postgresql/${version}/main/postgresql.conf
-    sudo sed -i "s/#random_page_cost = .*/random_page_cost = 1/" /etc/postgresql/${version}/main/postgresql.conf
+    sudo sed -i "s/#random_page_cost = .*/random_page_cost = 0.01/" /etc/postgresql/${version}/main/postgresql.conf
     sudo sed -i "s/#jit =.*/jit = off/" /etc/postgresql/${version}/main/postgresql.conf
     sudo sed -i "s/#max_locks_per_transaction =.*/max_locks_per_transaction = 1024/" /etc/postgresql/${version}/main/postgresql.conf
 

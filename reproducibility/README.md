@@ -4,6 +4,7 @@
 
 - Linux[^1] (Recommended) / MacOS / Windows **instance** with internet connection
   - Minimum recommended specs: 8 vCPUs (x64 recommended), 16 GB RAM, 100 GB NVMe SSD
+  - **IMPORTANT**: We recommend using an x64 machine instead of ARM, as we found that deploying Riak clusters with many nodes under MacOS ARM was triggering `segmentation fault` errors in the QEMU virtualization layer.
 - **Docker**
   - To install in Windows: https://docs.docker.com/desktop/install/windows-install/
   - To install in MacOS: https://docs.docker.com/desktop/install/mac-install/

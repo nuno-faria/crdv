@@ -51,6 +51,7 @@ def populate(cursor):
         FROM generate_series(1, 1000000);
     ''')
 
+    cursor.execute('ANALYZE')
     cursor.execute('SET random_page_cost = 4')
 
 
