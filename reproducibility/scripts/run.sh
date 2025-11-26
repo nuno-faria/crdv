@@ -3,6 +3,10 @@
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 NETWORK="custom-network"
 EXTRA_CONTAINER_OPTS=""
+# if "true", creates containers that use just a single dedicated core, using Docker's --cpuset-cpus.
+# this improves performance when trying to simulate multiple sites in a single machine.
+# (available for the engines used in the multiple_sites test, i.e., crdv and riak)
+DEDICATE_SINGLE_CORE="false"
 
 # waits until a container is in a healthy state
 # $1 - container name
@@ -92,8 +96,12 @@ create_crdv() {
     drop_crdv
 
     for ((i = 1; i <= sites; i++)); do
+        cpuset=""
+        if [ "$DEDICATE_SINGLE_CORE" = "true" ]; then
+            cpuset="--cpuset-cpus=$((i - 1))"
+        fi
         # --cap-add NET_ADMIN to allow network partitions
-        docker run --name crdv-$i --shm-size=1g --network $NETWORK --cap-add NET_ADMIN -dit $EXTRA_CONTAINER_OPTS crdv > /dev/null
+        docker run --name crdv-$i --shm-size=1g --network $NETWORK --cap-add NET_ADMIN -dit $cpuset $EXTRA_CONTAINER_OPTS crdv > /dev/null
     done
 
     for ((i = 1; i <= sites; i++)); do
@@ -177,8 +185,12 @@ create_riak() {
     drop_riak
 
     for ((i = 1; i <= sites; i++)); do
+        cpuset=""
+        if [ "$DEDICATE_SINGLE_CORE" = "true" ]; then
+            cpuset="--cpuset-cpus=$((i - 1))"
+        fi
         # --cap-add NET_ADMIN to allow network partitions
-        docker run --name riak-$i --shm-size=1g --network $NETWORK --cap-add NET_ADMIN -dit $EXTRA_CONTAINER_OPTS riak > /dev/null
+        docker run --name riak-$i --shm-size=1g --network $NETWORK --cap-add NET_ADMIN -dit $cpuset $EXTRA_CONTAINER_OPTS riak > /dev/null
     done
 
     for ((i = 1; i <= sites; i++)); do
@@ -371,7 +383,7 @@ multiple_sites() {
     local max_sites=$(grep -Po '(?<=MAX_SITES=).*'  ../conf/multiple_sites.sh)
     local i
 
-    EXTRA_CONTAINER_OPTS='--cpus 1';
+    DEDICATE_SINGLE_CORE="true"
 
     for ((i = 1; i <= max_sites; i++)); do
         create_crdv $i; create_riak $i
@@ -383,7 +395,7 @@ multiple_sites() {
         run_test run_micro_scale.sh ../conf/multiple_sites.sh $i ring
     done
 
-    EXTRA_CONTAINER_OPTS=''
+    DEDICATE_SINGLE_CORE="false"
     cleanup
 }
 

@@ -11,7 +11,9 @@ TIME=60
 WARMUP=3
 COOLDOWN=3
 RUNS=3
-WORKERS=1024
+WORKERS_R=1024
+WORKERS_W=1024
+WORKERS=""
 STRUCTURES=1000000
 TYPES=(r w) # rw - reads and writes; r - only reads; w - only writes
 ENGINES="crdv riak"
@@ -53,6 +55,12 @@ run() {
         # the topology does not affect reads
         if [[ "$type" = "r" && "$RING" == true ]]; then
             continue
+        fi
+
+        if [[ "$type" = "r" ]]; then
+            WORKERS=$WORKERS_R
+        else
+            WORKERS=$WORKERS_W
         fi
 
         echo "Running $1 type=$type ring=$RING"

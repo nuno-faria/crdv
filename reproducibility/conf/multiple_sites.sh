@@ -6,8 +6,10 @@ WARMUP=3
 COOLDOWN=3
 # Number of runs per test (each runs for $TIME seconds)
 RUNS=3
-# Number of clients
-WORKERS=128
+# Number of clients for the read tests
+WORKERS_R=32
+# Number of clients for the write tests
+WORKERS_W=1024
 # Number of structures
 STRUCTURES=1000000
 # List with benchmark types (r - reads; w - writes)
