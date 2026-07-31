@@ -11,6 +11,7 @@
 <p align="center">
   | <a href="https://dl.acm.org/doi/pdf/10.1145/3709675"><b>Paper</b></a>
   | <a href="https://nuno-faria.github.io/crdv/"><b>Website</b></a>
+  | <a href="https://nuno-faria.github.io/crdv/demo/"><b>Demo</b></a>
   | <a href="https://nuno-faria.github.io/papers/crdv-poster.pdf"><b>Poster</b></a>
   | <a href="https://files.atypon.com/acm/daccba87f80ed6d216a52bfc673ba7c6"><b>Presentation</b></a>
   |
@@ -41,6 +42,8 @@ Proof-of-concept implementation of Conflict-free Replicated Data Views. The comp
 - [Reproducibility](#reproducibility)
 
 # Getting started
+
+(Alternatively to the instructions below, you can also test CRDV directly in the browser, by accessing the demo available at https://nuno-faria.github.io/crdv/demo/.)
 
 ## Setup
 
