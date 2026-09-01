@@ -910,6 +910,93 @@ WHERE t0.id = 'm1'</span>
   <section>
     <details open>
       <summary>
+        <h2>Shopping Carts Example</h2>
+      </summary>
+      <div class="grid sm:grid-cols-2 gap-8">
+        <div class="card">
+          <p class="mb-4">
+            Sample data:
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <div class="code-area relative mr-auto" data-site="1">
+              <span class="code-area-label">Site 1</span>
+              <button class="btn btn-lite btn-primary float-right ml-2" data-run-example
+                title="Run in Site 1">▶︎</button>
+              <!-- beautify ignore:start -->
+              <span class="sql whitespace-pre-wrap">SELECT mapAdd('cart-1', 'Apples', 'qnt-1');
+SELECT mapAdd('cart-1', 'Bananas', 'qnt-2');
+SELECT mapAdd('cart-1', 'Cherries', 'qnt-3');
+SELECT counterInc('qnt-1', 2);
+SELECT counterInc('qnt-2', 2);
+SELECT counterInc('qnt-3', 3);
+
+SELECT mapAdd('cart-2', 'Apples', 'qnt-4');
+SELECT mapAdd('cart-2', 'Bread', 'qnt-5');
+SELECT counterInc('qnt-4', 1);
+SELECT counterInc('qnt-5', 1);</span>
+              <!-- beautify ignore:end -->
+            </div>
+          </div>
+          <hr />
+          <p class="my-4">
+            Replicate the data using
+            <button class="btn btn-lite btn-primary" data-replicate disabled>
+              Replicate and Merge
+            </button>.
+          </p>
+        </div>
+        <div class="card">
+          <p class="my-4">
+            Create resolution views in both sites.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <div class="code-area relative mr-auto" data-site="1">
+              <span class="code-area-label">Site 1</span>
+              <button class="btn btn-lite btn-primary float-right ml-2" data-run-example
+                title="Run in Site 1">▶︎</button>
+              <!-- beautify ignore:start -->
+              <span class="sql whitespace-pre-wrap">CREATE VIEW CartAw AS
+  SELECT m.id, (m.data).key as product, c.data as quantity
+  FROM MapAwLww m
+  JOIN Counter c ON (m.data).value = c.id
+  WHERE m.id LIKE 'cart-%';
+
+CREATE VIEW CartRw AS
+  SELECT m.id, (m.data).key as product, c.data as quantity
+  FROM MapRwLww m
+  JOIN Counter c ON (m.data).value = c.id
+  WHERE m.id LIKE 'cart-%';</span>
+              <!-- beautify ignore:end -->
+            </div>
+            <div class="code-area relative ml-auto" data-site="2">
+              <span class="code-area-label">Site 2</span>
+              <button class="btn btn-lite btn-primary float-right ml-2" data-run-example
+                title="Run in Site 2">▶︎</button>
+              <!-- beautify ignore:start -->
+              <span class="sql whitespace-pre-wrap">CREATE VIEW CartAw AS
+  SELECT m.id, (m.data).key as product, c.data as quantity
+  FROM MapAwLww m
+  JOIN Counter c ON (m.data).value = c.id
+  WHERE m.id LIKE 'cart-%';
+
+CREATE VIEW CartRw AS
+  SELECT m.id, (m.data).key as product, c.data as quantity
+  FROM MapRwLww m
+  JOIN Counter c ON (m.data).value = c.id
+  WHERE m.id LIKE 'cart-%';</span>
+              <!-- beautify ignore:end -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <hr />
+
+  <section>
+    <details open>
+      <summary>
         <h2>Available Views and Functions</h2>
       </summary>
       <p class="mb-4">
